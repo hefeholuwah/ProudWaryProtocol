@@ -1,25 +1,36 @@
 from django.http import JsonResponse
 from datetime import datetime, timedelta
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
 
+@csrf_exempt
 def get_info(request):
-    slack_name = "Ifeoluwa Adefioye"
-    track = "BackendTrack"
+    if request.method == 'GET':
+        # Get query parameters
+        slack_name = request.GET.get('slack_name')
+        track = request.GET.get('track')
 
-    current_day = datetime.now().strftime('%A')
+        # Get the current day of the week
+        current_day = datetime.now().strftime('%A')
 
-    current_time = datetime.utcnow() + timedelta(hours=2)  # Adjust for UTC+2
+        # Get the current UTC time with validation of +/-2 hours
+        current_time_utc = datetime.utcnow() + timedelta(hours=2)
 
-    file_url = 'https://github.com/hefeholuwah/ProudWaryProtocol/blob/main/django_project/views.py'
-    source_code_url = 'https://github.com/hefeholuwah/ProudWaryProtocol'
+        # URLs for GitHub file and source code
+        file_url = 'https://github.com/hefeholuwah/ProudWaryProtocol/blob/main/django_project/views.py'
+        source_code_url = 'https://github.com/hefeholuwah/ProudWaryProtocol'
 
-    response_data = {
-        'slack_name': slack_name,
-        'current_day': current_day,
-        'current_utc_time': current_time.strftime('%Y-%m-%d %H:%M:%S'),
-        'track': track,
-        'file_url': file_url,
-        'source_code_url': source_code_url,
-        'status': 'Success',
-    }
+        # Construct the response JSON
+        response_data = {
+            'slack_name': slack_name,
+            'current_day': current_day,
+            'current_utc_time': current_time_utc.strftime('%Y-%m-%d %H:%M:%S'),
+            'track': track,
+            'file_url': file_url,
+            'source_code_url': source_code_url,
+            'status': 'Success',
+        }
 
-    return JsonResponse(response_data)
+        return JsonResponse(response_data)
+    else:
+        return HttpResponse(status=405)  # Method Not Allowed
