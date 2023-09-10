@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 
+
 @csrf_exempt
 def get_info(request):
     if request.method == 'GET':
@@ -24,10 +25,10 @@ def get_info(request):
         response_data = {
             'slack_name': slack_name,
             'current_day': current_day,
-            'current_utc_time': current_time_utc.strftime('%Y-%m-%d %H:%M:%S'),
+            'utc_time': current_time_utc.strftime('%Y-%m-%dT%H:%M:%SZ'),
             'track': track,
-            'file_url': file_url,
-            'source_code_url': source_code_url,
+            'github_file_url': file_url,
+            'github_repo_url': source_code_url,
             'status': 'Success',
         }
 
