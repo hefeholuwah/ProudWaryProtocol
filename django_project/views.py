@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from datetime import datetime, timedelta
 
 def get_info(request):
-    slack_name = "Hngx"
+    slack_name = "Ifeoluwa Adefioye"
     track = "BackendTrack"
 
     current_day = datetime.now().strftime('%A')
